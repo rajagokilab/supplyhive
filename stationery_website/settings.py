@@ -17,7 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ----------------------
 SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['your-app-name.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # ----------------------
 # Installed apps
@@ -30,7 +30,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'shop',  # your app
+    'shop',            # your app
+    'cloudinary',      # Cloudinary integration
+    'cloudinary_storage',
 ]
 
 # ----------------------
@@ -38,7 +40,7 @@ INSTALLED_APPS = [
 # ----------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise for static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Serve static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -51,7 +53,6 @@ MIDDLEWARE = [
 # URLs and WSGI
 # ----------------------
 ROOT_URLCONF = 'stationery_website.urls'
-
 WSGI_APPLICATION = 'stationery_website.wsgi.application'
 
 # ----------------------
@@ -104,16 +105,24 @@ USE_TZ = True
 # ----------------------
 # Static files (CSS, JS, images)
 # ----------------------
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "shop/static"]  # your dev static folder
-STATIC_ROOT = BASE_DIR / "staticfiles"         # collectstatic output folder
+STATICFILES_DIRS = [BASE_DIR / "shop/static"]  # dev static folder
+STATIC_ROOT = BASE_DIR / "staticfiles"         # collectstatic output
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ----------------------
-# Media files (user-uploaded images)
+# Media files (Cloudinary)
 # ----------------------
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME', 'your-cloud-name'),
+    'API_KEY': os.environ.get('CLOUD_API_KEY', 'your-api-key'),
+    'API_SECRET': os.environ.get('CLOUD_API_SECRET', 'your-api-secret')
+}
 
 # ----------------------
 # Default primary key
@@ -128,9 +137,9 @@ LOGIN_REDIRECT_URL = '/'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 
 # ----------------------
-# Notes for deployment
+# Deployment Notes
 # ----------------------
 # 1. Run `python manage.py collectstatic --noinput` before deploying.
-# 2. Set SECRET_KEY and DEBUG as environment variables in Render.
-# 3. WhiteNoise will serve static files in production.
-# 4. Media files require S3/Cloudinary or manual hosting.
+# 2. Set SECRET_KEY, DEBUG, ALLOWED_HOSTS, and Cloudinary credentials as environment variables on Render.
+# 3. WhiteNoise serves static files in production.
+# 4. Cloudinary serves all uploaded media files.
