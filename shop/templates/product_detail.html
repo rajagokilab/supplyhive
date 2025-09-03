@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Product Details{% endblock %}
+
+{% block content %}
+<div class="container py-5 px-3">
+
+    <!-- Product Title -->
+    <h1 class="my-5 text-center font-bold text-2xl">{{ product.name }}</h1>
+
+    <div class="row g-5">
+        <!-- Left Column: Product Image -->
+        <div class="col-md-6">
+            <div class="card p-3 rounded-4 shadow-sm">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" class="img-fluid rounded-4 mb-3" alt="{{ product.name }}">
+                {% else %}
+                    <img src="https://placehold.co/600x400/E0E0E0/FFFFFF?text=No+Image" class="img-fluid rounded-4 mb-3" alt="No Image">
+                {% endif %}
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-start">
+                        <p class="mb-0 fw-bold">{{ product.name }}</p>
+                        <p class="mb-0 text-muted">Rs. {{ product.price }}</p>
+                        {% if product.bulk_price_info %}
+                            <small class="text-muted">{{ product.bulk_price_info }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Product Details & Features -->
+        <div class="col-md-6">
+            <div class="card p-4 rounded-4 shadow-sm h-100">
+                            <p class="mb-2 text-center font-bold text-2xl">Product Description</p>
+
+                <h2 class="h4">{{ product.name }}</h2>
+                <h3 class="h6 text-muted">Advanced Functionality for Students and Professionals</h3>
+                <p class="mb-4">This {{ product.name }} is designed to meet the needs of students, engineers, and professionals. Equipped with high-quality features, it ensures reliable performance and ease of use for daily tasks.</p>
+                
+                <h4 class="h6">Key Features:</h4>
+                <ul class="list-unstyled">
+                    <li>• Supports fractions, exponents, logarithms, and trigonometric functions</li>
+                    <li>• Multi-line display for reviewing inputs and results</li>
+                    <li>• Ideal for high school, college, and professional use</li>
+                    <li>• Battery-powered with auto power-off for extended life</li>
+                    <li>• Lightweight and compact design for portability</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+ <a href="#" class="btn btn-primary fw-bold rounded-2 add-to-cart" data-id="{{ product.id }}">
+                                Add to Cart
+                            </a>        <a href="{% url 'checkout' %}" class="btn btn-primary fw-bold rounded-2">Buy Now</a>
+    </div>
+
+    <!-- Comments & Reviews -->
+    <div class="mt-5">
+        <h2 class="h4 text-center mb-4">Comments & Review</h2>
+
+        <!-- Review 1 -->
+        <div class="card p-4 rounded-4 shadow-sm mb-4">
+            <h3 class="h6 fw-bold">1. Positive Review – Student Perspective</h3>
+            <p class="mb-1">Rating: 
+                <span class="d-inline-flex align-items-center">
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                </span>
+            </p>
+            <p class="text-muted">"This calculator has been a lifesaver for my high school math and physics classes. It's easy to use, has all the necessary functions, and the multi-line display makes checking work super simple. Definitely worth it for students!"</p>
+        </div>
+
+        <!-- Review 2 -->
+        <div class="card p-4 rounded-4 shadow-sm mb-4">
+            <h3 class="h6 fw-bold">2. Positive Review – Professional/Engineer</h3>
+            <p class="mb-1">Rating: 
+                <span class="d-inline-flex align-items-center">
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292L10.646 5.119a.516.516 0 0 1 .386.342l4.89 6.966c.07.289-.043.546-.282.687a.516.516 0 0 1-.28.06l-4.89-.696L8 13.187l-4.389 2.256a.519.519 0 0 1-.746-.592l.83-4.73L.173 6.765a.516.516 0 0 1 .282-.687A.516.516 0 0 1 .637 5.76L5.354 5.12z"/></svg>
+                </span>
+            </p>
+            <p class="text-muted">"Excellent build quality and functionality. I use this for quick field calculations, and it's accurate and responsive. The layout is intuitive, and it handles complex equations with no trouble. Great value for engineers or technicians."</p>
+        </div>
+
+        <!-- Review 3 -->
+        <div class="card p-4 rounded-4 shadow-sm mb-4">
+            <h3 class="h6 fw-bold">3. Neutral Review – General Use</h3>
+            <p class="mb-1">Rating: 
+                <span class="d-inline-flex align-items-center">
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                </span>
+            </p>
+            <p class="text-muted">"Good calculator overall. It covers all the basic and advanced functions I need, though the user manual could be clearer for beginners. Once you get used to the button layout, it's a solid tool."</p>
+        </div>
+
+        <!-- Review 4 -->
+        <div class="card p-4 rounded-4 shadow-sm mb-4">
+            <h3 class="h6 fw-bold">4. Critical Review – Beginner User</h3>
+            <p class="mb-1">Rating: 
+                <span class="d-inline-flex align-items-center">
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" viewBox="0 0 16 16"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                    <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.866 14.85c-.078.444.36.791.746.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/></svg>
+                </span>
+            </p>
+            <p class="text-muted">"I found this calculator a bit overwhelming at first. It has a lot of functions, but the instructions weren't very beginner-friendly. It works fine, but I had to look up tutorials online to figure it out."</p>
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script>
+// Add to Cart
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.add-to-cart');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const productId = btn.dataset.id;
+
+            fetch(`/add-to-cart/${productId}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Optional: show a quick message
+                    location.reload();   // Refresh the page
+                }
+            })
+            .catch(err => console.error('Error adding to cart:', err));
+        });
+    });
+
+    // Price Filter
+    const priceFilters = document.getElementById('price-filters');
+    const productGrid = document.getElementById('product-grid');
+
+    const fetchFilteredProducts = () => {
+        const selectedRanges = Array.from(priceFilters.querySelectorAll('input:checked'))
+            .map(cb => `${cb.dataset.priceMin}-${cb.dataset.priceMax}`);
+
+        const params = new URLSearchParams();
+        selectedRanges.forEach(r => params.append('price', r));
+
+        fetch(`/shop/?${params.toString()}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(res => res.text())
+            .then(html => {
+                productGrid.innerHTML = html;
+            })
+            .catch(err => console.error('Error fetching products:', err));
+    };
+
+    priceFilters.addEventListener('change', fetchFilteredProducts);
+});
+</script>
+{% endblock %}

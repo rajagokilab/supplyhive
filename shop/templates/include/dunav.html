@@ -1,0 +1,384 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supplyhive Navbar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white font-[Inter]">
+
+<!-- Navbar -->
+<nav class="bg-white border-b border-gray-200 shadow-sm w-full fixed top-0 left-0 z-50 ">
+  <div class="max-w-7xl  mx-auto px-4 sm:px-6 lg:px-8 ">
+    <div class="flex flex-wrap items-center justify-between h-20 ">
+
+      <!-- Logo + Site Name -->
+      <div class="flex-shrink-0 flex items-center space-x-2 sm:space-x-3">
+        <div class="h-10 w-10 sm:h-12 sm:w-12 rounded-full flex items-center justify-center p-1">
+          <img src="{% static 'images/logo.png' %}" alt="Supplyhive Logo">
+        </div>
+        <span class="text-md sm:text-lg md:text-xl font-bold text-gray-900">Supplyhive</span>
+      </div>
+
+      <!-- Desktop Navigation Links + Login/User -->
+      <div class="hidden md:flex md:items-center md:space-x-6">
+        <a href="{% url 'home' %}" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-base sm:text-lg font-medium transition-colors duration-200">Home</a>
+        <a href="{% url 'shop' %}" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-base sm:text-lg font-medium transition-colors duration-200">Shop</a>
+        <a href="{% url 'about' %}" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-base sm:text-lg font-medium transition-colors duration-200">About</a>
+        <a href="{% url 'contact' %}" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-base sm:text-lg font-medium transition-colors duration-200">Contact</a>
+
+        <!-- Login/Register Buttons -->
+        <div id="login-buttons-container" class="flex items-center space-x-3">
+          <a id="login-button" class="text-gray-900 hover:text-blue-600 px-3 py-2 text-base sm:text-lg font-medium cursor-pointer">Login/Register</a>
+        </div>
+
+        <!-- User Display -->
+        <span id="user-display" class="hidden text-gray-900 font-semibold cursor-pointer"></span>
+      </div>
+
+      <!-- Icons / Search / Cart / Profile -->
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        <!-- Desktop search -->
+        <div class="relative hidden md:block">
+          <input type="text" placeholder="Search" class="w-32 sm:w-48 md:w-64 lg:w-72 pl-4 pr-12 py-2 text-sm sm:text-base text-white bg-blue-500 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-white">
+          <button class="absolute inset-y-0 right-0 flex items-center pr-4 text-white">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+
+        <!-- Mobile search button -->
+        <button class="text-gray-600 hover:text-gray-900 px-2 py-2 rounded-full transition-colors duration-200 md:hidden" id="mobile-search-button">
+          <i class="fas fa-search text-xl"></i>
+        </button>
+
+        <!-- Shopping Cart -->
+       <a href="{% url 'cart' %}">
+    <button class="text-gray-600 hover:text-gray-900 px-2 py-2 rounded-full transition-colors duration-200">
+        <i class="fas fa-shopping-cart text-xl"></i>
+        <!-- Optional: cart counter badge -->
+        <span id="cart-counter" class="ml-1 text-sm font-bold text-red-600">
+            {{ request.session.cart|length|default:0 }}
+        </span>
+    </button>
+</a>
+
+        <!-- Profile Dropdown -->
+        <div class="relative">
+          <button id="profile-menu-button" class="text-gray-600 hover:text-gray-900 px-2 py-2 rounded-full transition-colors duration-200">
+            <i class="fas fa-user-circle text-xl"></i>
+          </button>
+          <div id="profile-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transform scale-95 opacity-0 invisible origin-top-right transition-all duration-200">
+            <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="profile-menu-button">
+<a href="{% url 'my_orders' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"> 
+    My Orders
+</a>
+
+<a href="{% url 'my_orders' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+    Track Order
+</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 px-2 py-2 rounded-full transition-colors duration-200 md:hidden">
+        <i id="mobile-menu-icon" class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-2 space-y-1 bg-white rounded-lg shadow-lg p-4">
+      <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600 hover:bg-gray-50 rounded">Home</a>
+      <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600 hover:bg-gray-50 rounded">Shop</a>
+      <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600 hover:bg-gray-50 rounded">About us</a>
+      <a href="#" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600 hover:bg-gray-50 rounded">Contact</a>
+      <a id="mobile-login-button-menu" class="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600 hover:bg-gray-50 rounded">Login/Register</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Login/Register Modal -->
+<div id="login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm p-4 sm:p-0">
+  <div class="bg-white rounded-xl shadow-2xl p-4 sm:p-6 md:p-8 max-w-xs sm:max-w-sm md:max-w-md w-full relative overflow-hidden">
+    <!-- Close button -->
+    <button id="close-modal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 transition-colors duration-200">
+      <i class="fas fa-times text-xl"></i>
+    </button>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form" class="block">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Login</h2>
+        <a href="#" id="show-register" class="block mt-2 text-blue-500 font-semibold hover:underline">Create an Account</a>
+      </div>
+      <form>
+        <div class="mb-4">
+          <label for="login-username" class="block text-gray-700 text-sm font-medium mb-1">Username</label>
+          <input type="text" id="login-username" placeholder="Username"
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <div class="mb-6">
+          <label for="login-password" class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+          <input type="password" id="login-password" placeholder="Password"
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-600 transition-colors duration-200">
+          Login
+        </button>
+      </form>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-form" class="hidden">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Register</h2>
+        <a href="#" id="show-login" class="block mt-2 text-blue-500 font-semibold hover:underline">Already have an account? Login</a>
+      </div>
+      <form>
+        <div class="mb-4">
+          <label for="register-username" class="block text-gray-700 text-sm font-medium mb-1">Username</label>
+          <input type="text" id="register-username" placeholder="Username"
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <div class="mb-4">
+          <label for="register-email" class="block text-gray-700 text-sm font-medium mb-1">Email</label>
+          <input type="email" id="register-email" placeholder="Email"
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <div class="mb-6">
+          <label for="register-password" class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+          <input type="password" id="register-password" placeholder="Password"
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <button type="submit" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-green-600 transition-colors duration-200">
+          Register
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  // profile
+    // Profile Dropdown
+  const profileButton = document.getElementById('profile-menu-button');
+  const profileMenu = document.getElementById('profile-menu');
+  profileButton.addEventListener('click', e => {
+    e.stopPropagation();
+    const isVisible = profileMenu.classList.contains('scale-100');
+    profileMenu.classList.toggle('scale-100', !isVisible);
+    profileMenu.classList.toggle('opacity-100', !isVisible);
+    profileMenu.classList.toggle('visible', !isVisible);
+    profileMenu.classList.toggle('scale-95', isVisible);
+    profileMenu.classList.toggle('opacity-0', isVisible);
+    profileMenu.classList.toggle('invisible', isVisible);
+  });
+  window.addEventListener('click', e => {
+    if (!profileMenu.contains(e.target) && !profileButton.contains(e.target)) {
+      profileMenu.classList.remove('scale-100','opacity-100','visible');
+      profileMenu.classList.add('scale-95','opacity-0','invisible');
+    }
+  });
+
+
+// =======================
+// ELEMENTS
+// =======================
+const loginButton = document.getElementById('login-button');
+const mobileLoginButtonMenu = document.getElementById('mobile-login-button-menu');
+const loginModal = document.getElementById('login-modal');
+const closeModalButton = document.getElementById('close-modal');
+
+const loginFormDiv = document.getElementById('login-form');
+const registerFormDiv = document.getElementById('register-form');
+const showRegister = document.getElementById('show-register');
+const showLogin = document.getElementById('show-login');
+
+const userDisplay = document.getElementById('user-display');
+const loginButtonsContainer = document.getElementById('login-buttons-container');
+
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenu = document.getElementById('mobile-menu');
+const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+
+// =======================
+// FUNCTIONS
+// =======================
+
+// Show/hide modal
+const showLoginModal = () => loginModal.classList.remove('hidden');
+const closeLoginModal = () => loginModal.classList.add('hidden');
+
+// Get CSRF token from cookies
+// Get CSRF token from meta tag
+function getCSRFToken() {
+  return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
+
+// Update UI based on login state
+function updateUserUI(username) {
+  if (username) {
+    loginButtonsContainer.style.display = 'none';
+    userDisplay.textContent = username;
+    userDisplay.style.display = 'inline-block';
+  } else {
+    loginButtonsContainer.style.display = 'flex';
+    userDisplay.style.display = 'none';
+  }
+}
+
+// =======================
+// MODAL EVENTS
+// =======================
+loginButton?.addEventListener('click', showLoginModal);
+mobileLoginButtonMenu?.addEventListener('click', showLoginModal);
+closeModalButton?.addEventListener('click', closeLoginModal);
+loginModal.addEventListener('click', e => {
+  if (e.target === loginModal) closeLoginModal();
+});
+
+// =======================
+// SWITCH LOGIN / REGISTER
+// =======================
+showRegister?.addEventListener('click', e => {
+  e.preventDefault();
+  loginFormDiv.classList.add('hidden');
+  registerFormDiv.classList.remove('hidden');
+});
+showLogin?.addEventListener('click', e => {
+  e.preventDefault();
+  registerFormDiv.classList.add('hidden');
+  loginFormDiv.classList.remove('hidden');
+});
+
+// =======================
+// REGISTER FORM
+// =======================
+document.querySelector('#register-form form').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const username = document.getElementById('register-username').value.trim();
+  const email = document.getElementById('register-email').value.trim();
+  const password = document.getElementById('register-password').value.trim();
+
+  if (!username || !email || !password) return alert('Please fill all fields.');
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) return alert('Please enter a valid email.');
+
+  try {
+    const response = await fetch('/api/register/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({ username, email, password })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      alert(data.message);
+      showLogin.click();
+    } else {
+      alert(data.error || 'Something went wrong.');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong. Try again.');
+  }
+});
+
+// =======================
+// LOGIN FORM
+// =======================
+document.querySelector('#login-form form').addEventListener('submit', async e => {
+  e.preventDefault();
+
+  const username = document.getElementById('login-username').value.trim();
+  const password = document.getElementById('login-password').value.trim();
+
+  if (!username || !password) return alert('Please fill both username and password.');
+
+  try {
+    const response = await fetch('/api/login/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCSRFToken()
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      updateUserUI(data.username);
+      closeLoginModal();
+      alert(data.message);
+    } else {
+      alert(data.error || 'Invalid credentials.');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong. Try again.');
+  }
+});
+
+// =======================
+// LOGOUT
+// =======================
+userDisplay?.addEventListener('click', async () => {
+  if (!confirm('Do you want to logout?')) return;
+
+  try {
+    const response = await fetch('/api/logout/', {
+      credentials: 'same-origin'
+    });
+    const data = await response.json();
+    updateUserUI(null);
+    alert(data.message);
+  } catch (err) {
+    console.error(err);
+    alert('Something went wrong. Try again.');
+  }
+});
+
+// =======================
+// MOBILE MENU TOGGLE
+// =======================
+mobileMenuButton?.addEventListener('click', () => {
+  mobileMenu.classList.toggle('hidden');
+  mobileMenuIcon.classList.toggle('fa-bars');
+  mobileMenuIcon.classList.toggle('fa-times');
+});
+
+// =======================
+// CHECK LOGIN STATE ON PAGE LOAD
+// =======================
+async function checkLoginStatus() {
+  try {
+    const response = await fetch('/api/check-login/', { credentials: 'same-origin' });
+    const data = await response.json();
+    updateUserUI(data.logged_in ? data.username : null);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+checkLoginStatus();
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Orders{% endblock %}
+
+{% block content %}
+<div class="container py-5 px-3">
+    <h1 class="my-5 text-center font-bold text-4xl">Your Orders</h1>
+
+    {% if orders %}
+        {% for order in orders %}
+        <div class="bg-white  p-4 p-md-5 mb-5">
+
+            <!-- Order Header -->
+            <div class="card mb-4 border-0">
+                <img src="{% static 'images/orderbanner.png' %}" class="card-img-top rounded-4" alt="Order Image">
+                <div class="card-body px-0">
+                    <p class="card-text">
+                        <small class="text-muted">Order ID :</small> <span class="fw-bold">OD{{ order.id }}</span><br>
+                        <small class="text-muted">Seller :</small> <span class="fw-bold">Supplyhive</span><br>
+                        <small class="text-muted">Total Amount :</small> Rs.{{ order.total_amount }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Order Items Table -->
+            <div class="card p-4 rounded-4 shadow-sm">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="fw-bold">Product</th>
+                            <th scope="col" class="text-center fw-bold">Quantity</th>
+                            <th scope="col" class="text-center fw-bold">Unit Price</th>
+                            <th scope="col" class="text-end fw-bold">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" class="me-3 rounded-2" alt="{{ item.product.name }}" style="max-width: 60px;">
+                                    {% else %}
+                                    <img src="{% static 'images/placeholder.png' %}" class="me-3 rounded-2" alt="No Image" style="max-width: 60px;">
+                                    {% endif %}
+                                    <div>
+                                        <p class="mb-0 fw-bold">{{ item.product.name }}</p>
+                                        <p class="mb-0 text-muted">Rs.{{ item.price }}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-middle text-center">{{ item.quantity }}</td>
+                            <td class="align-middle text-center">Rs.{{ item.price }}</td>
+                            <td class="align-middle text-end">Rs.{{ item.total_price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <p class="mb-0 text-muted">Delivery expected by {{ order.created_at|date:"M d, Y" }}</p>
+<div class="d-flex align-items-center mt-3">
+     <a href="{% url 'track_order' order.id %}" class="btn btn-outline-primary btn-sm">
+        Track Order
+    </a>
+    <!-- Yellow star SVG -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#F4C430" class="bi bi-star-fill me-1" viewBox="0 0 16 16">
+        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.89-.696L7.538.792c.197-.367.73-.367.927 0l2.184 4.327 4.89.696c.441.063.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+    </svg>
+
+    <small class="text-muted font-bold">Rate and Review the Products</small>
+</div>            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center text-muted">You have no orders yet.</p>
+    {% endif %}
+    
+</div>
+{% endblock %}

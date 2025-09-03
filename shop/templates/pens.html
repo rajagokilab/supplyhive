@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Pens & Writing{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Banner Section -->
+    <div class="text-center mt-24 mb-12 font-bold">
+        <img src="{% static 'images/pensbanner.png' %}" 
+             class="mx-auto rounded-3xl shadow-lg mb-6" 
+             alt="Pens & Writing Banner">
+    </div>
+
+    <!-- Tagline Section -->
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">
+            "Write, Plan & Create – Shop Smart!"
+        </h2>
+    </div>
+
+    <div class="row mb-4">
+        <!-- Sidebar -->
+        <div class="col-md-3">
+            <!-- Categories -->
+            <div class="bg-primary text-black text-xl p-3 rounded-xl mb-4">
+                <h5 class="mb-2">Categories</h5>
+               <ul class="list-unstyled text-black">
+                    <li><a href="{% url 'shop' %}" class="text-black">Office Basics</a></li>
+                    <li><a href="{% url 'files' %}" class="text-black">Files & Folders</a></li>
+                    <li><a href="{% url 'paper' %}" class="text-black">Paper & Notebooks</a></li>
+                    <li><a href="{% url 'pens' %}" class="text-white fw-bold">Pens & Writing</a></li>
+                    <li><a href="{% url 'school' %}" class="text-black">School Supplies</a></li>
+                </ul>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="bg-blue-600 text-white rounded-lg shadow-md p-4">
+                <h3 class="text-lg font-bold mb-4">Filter by Price</h3>
+                <div class="space-y-2" id="price-filters">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="form-checkbox text-blue-500" data-price-min="50" data-price-max="100">
+                        <span class="ml-2">Rs. 50-100</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="form-checkbox text-blue-500" data-price-min="100" data-price-max="200">
+                        <span class="ml-2">Rs. 100-200</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="form-checkbox text-blue-500" data-price-min="200" data-price-max="300">
+                        <span class="ml-2">Rs. 200-300</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" class="form-checkbox text-blue-500" data-price-min="300" data-price-max="500">
+                        <span class="ml-2">Rs. 300-500</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+ <!-- Product Grid -->
+        <div class="col-md-9">
+            <h3 class="mb-4 text-black font-bold text-4xl">{{ category_name }}</h3>
+            <div class="row g-4" id="product-grid">
+                {% for product in products %}
+                <div class="col-12 col-md-4 d-flex">
+                    <div class="card flex-fill shadow-sm rounded-4" style="background-color:#78b2f9;">
+                        {% if product.image %}
+                        <a href="{% url 'product_detail' product.id %}">
+                            <img src="{{ product.image.url }}" class="card-img-top rounded-xl" alt="{{ product.name }}">
+                        </a>
+                        {% endif %}
+                        <div class="card-body text-center text-dark">
+                            <a href="{% url 'product_detail' product.id %}" class="text-dark text-decoration-none">
+                                <h5 class="card-title mb-1">{{ product.name }}</h5>
+                            </a>
+                            <p class="mb-1">Rs. {{ product.price }}</p>
+                            <p class="card-text mb-3">{{ product.bulk_price_info }}</p>
+                            <a href="#" class="btn btn-primary fw-bold rounded-2 add-to-cart" data-id="{{ product.id }}">
+                                Add to Cart
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="col-12 text-center text-muted">No products available in this category.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Add to Cart
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.add-to-cart');
+
+    buttons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const productId = btn.dataset.id;
+
+            fetch(`/add-to-cart/${productId}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message); // Optional: show a quick message
+                    location.reload();   // Refresh the page
+                }
+            })
+            .catch(err => console.error('Error adding to cart:', err));
+        });
+    });
+
+    // Price Filter
+    const priceFilters = document.getElementById('price-filters');
+    const productGrid = document.getElementById('product-grid');
+
+    const fetchFilteredProducts = () => {
+        const selectedRanges = Array.from(priceFilters.querySelectorAll('input:checked'))
+            .map(cb => `${cb.dataset.priceMin}-${cb.dataset.priceMax}`);
+
+        const params = new URLSearchParams();
+        selectedRanges.forEach(r => params.append('price', r));
+
+        fetch(`/shop/?${params.toString()}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+            .then(res => res.text())
+            .then(html => {
+                productGrid.innerHTML = html;
+            })
+            .catch(err => console.error('Error fetching products:', err));
+    };
+
+    priceFilters.addEventListener('change', fetchFilteredProducts);
+});
+</script>
+{% endblock %}

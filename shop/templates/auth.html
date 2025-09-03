@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Login & Register{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
+    <!-- LOGIN FORM -->
+    <div id="login-form" class="block">
+      <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Login</h2>
+      <form method="POST" action="{% url 'auth' %}?next={{ request.GET.next }}">
+        {% csrf_token %}
+        <input type="hidden" name="login" value="1">
+        <div class="mb-4">
+          <label for="login-username" class="block text-gray-700 text-sm font-medium mb-1">Username</label>
+          <input type="text" name="username" id="login-username" placeholder="Username" required
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <div class="mb-6">
+          <label for="login-password" class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+          <input type="password" name="password" id="login-password" placeholder="Password" required
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-blue-500 transition-colors duration-200">
+        </div>
+        <button type="submit" class="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-600 transition-colors duration-200">
+          Login
+        </button>
+      </form>
+      <p class="text-center mt-4 text-gray-600">
+        Don't have an account?
+        <a href="#" id="show-register" class="text-blue-500 hover:underline font-semibold">Register</a>
+      </p>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-form" class="hidden">
+      <h2 class="text-2xl font-bold text-gray-800 text-center mb-6">Register</h2>
+      <form method="POST" action="{% url 'auth' %}?next={{ request.GET.next }}">
+        {% csrf_token %}
+        <input type="hidden" name="register" value="1">
+        <div class="mb-4">
+          <label for="register-username" class="block text-gray-700 text-sm font-medium mb-1">Username</label>
+          <input type="text" name="reg_username" id="register-username" placeholder="Username" required
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-green-500 transition-colors duration-200">
+        </div>
+        <div class="mb-4">
+          <label for="register-email" class="block text-gray-700 text-sm font-medium mb-1">Email</label>
+          <input type="email" name="reg_email" id="register-email" placeholder="Email" required
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-green-500 transition-colors duration-200">
+        </div>
+        <div class="mb-6">
+          <label for="register-password" class="block text-gray-700 text-sm font-medium mb-1">Password</label>
+          <input type="password" name="reg_password" id="register-password" placeholder="Password" required
+            class="w-full px-4 py-3 rounded-lg border-2 border-gray-300 focus:outline-none focus:border-green-500 transition-colors duration-200">
+        </div>
+        <button type="submit" class="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-xl hover:bg-green-600 transition-colors duration-200">
+          Register
+        </button>
+      </form>
+      <p class="text-center mt-4 text-gray-600">
+        Already have an account?
+        <a href="#" id="show-login" class="text-blue-500 hover:underline font-semibold">Login</a>
+      </p>
+    </div>
+
+    {% if messages %}
+    <div class="mt-4">
+      {% for message in messages %}
+        <p class="text-red-500 text-center">{{ message }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  const showRegister = document.getElementById('show-register');
+  const showLogin = document.getElementById('show-login');
+
+  showRegister.addEventListener('click', (e) => {
+    e.preventDefault();   // Prevents navigation
+    loginForm.classList.add('hidden');
+    registerForm.classList.remove('hidden');
+  });
+
+  showLogin.addEventListener('click', (e) => {
+    e.preventDefault();   // Prevents navigation
+    registerForm.classList.add('hidden');
+    loginForm.classList.remove('hidden');
+  });
+});
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% load static %}
+
+<footer class=" text-gray-600 py-12 mt-12 hover:text-black-900 ">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Top Footer: Company Info + Links -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:space-x-8 space-y-8 lg:space-y-0">
+      
+      <!-- Company Info -->
+      <div class="w-full lg:w-1/4">
+         <div class="flex-shrink-0 flex items-center space-x-3">
+        <div class="h-16 w-16 rounded-full flex items-center justify-center p-1">
+          <img src="{% static 'images/logo.png' %}" alt="Supplyhive Logo">
+        </div>
+        <span class="text-xl font-bold text-gray-900">Supplyhive</span>
+      </div>
+        <p class="text-sm text-gray-400">© 2025 Supplyhive Limited</p>
+        <p class="text-sm text-gray-400 mt-2">All rights reserved.</p>
+      </div>
+
+      <!-- Footer Links -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 w-full lg:w-3/4">
+        
+        <!-- Company -->
+        <div>
+          <h4 class="text-black font-semibold mb-4">Company</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-black transition-colors duration-200">About us</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Supplyhive Corporate</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Careers</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Team</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="text-black font-semibold mb-4">Contact Us</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Help & Support</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Partner with us</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Ride with us</a></li>
+          </ul>
+        </div>
+
+        <!-- Available in -->
+        <div>
+          <h4 class="text-white font-semibold mb-4">Available in</h4>
+          <ul class="space-y-2 text-sm">
+            <li>Coimbatore</li>
+            <li>Bengaluru</li>
+            <li>Chennai</li>
+            <li>Kolkata</li>
+          </ul>
+        </div>
+
+        <!-- Legal -->
+        <div>
+          <h4 class="text-white font-semibold mb-4">Legal</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Terms & Conditions</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Cookie Policy</a></li>
+            <li><a href="#" class="hover:text-black transition-colors duration-200">Privacy Policy</a></li>
+          </ul>
+        </div>
+
+        <!-- Social / Info -->
+        <div>
+          <h4 class="text-black font-semibold mb-4">Information</h4>
+          <ul class="space-y-2 text-sm">
+            <li>Location</li>
+            <li>Email</li>
+            <li>Social Media</li>
+          </ul>
+          <div class="flex space-x-4 mt-4  text-xl">
+            <a href="#" class="text-pink-900 hover:text-gray-900 transition-colors duration-200"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-blue-900 hover:text-gray-400 transition-colors duration-200"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-green-900 hover:text-gray-400 transition-colors duration-200"><i class="fab fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- App Download Section -->
+    <div class="mt-12 pt-8 border-t border-gray-700 flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0">
+      <span class="text-sm text-gray-400">For better experience, download the app now</span>
+      <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0">
+        <a href="#" class="flex items-center space-x-2 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+          <i class="fab fa-google-play"></i>
+          <span class="text-sm font-medium">Get it on<br>Google Play</span>
+        </a>
+        <a href="#" class="flex items-center space-x-2 bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200">
+          <i class="fab fa-apple"></i>
+          <span class="text-sm font-medium">Download on the<br>App Store</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

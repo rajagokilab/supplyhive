@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Contact Us - Stationery{% endblock %}
+
+{% block content %}
+
+<div class="w-full max-w-9xl mx-auto p-4 mt-12">
+        <!-- Hero Banner Section -->
+        <div class="mb-12">
+            <img src="{% static 'images/c1.png' %}" alt="Stationery items in a bag" class="w-full ">
+        </div>
+    <!-- Tagline Section -->
+    <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-gray-800 mb-4">
+            "Your Perfect Stationery Partner Is Just a Message Away."
+        </h2>
+    </div>
+
+    <!-- Contact Details Section -->
+    <div class="bg-blue-100 p-8 rounded-lg shadow-md mb-12 text-center">
+        <h3 class="text-xl font-bold mb-4">Contact Details</h3>
+        <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+            <div class="bg-blue-600 text-white rounded-lg p-4 shadow-lg text-center w-full md:w-1/3">
+                <p class="font-bold">Location</p>
+                <p>78 Beechwood Ave,</p>
+                <p>Sarasota, FL 34231</p>
+            </div>
+            <div class="bg-blue-600 text-white rounded-lg p-4 shadow-lg text-center w-full md:w-1/3">
+                <p class="font-bold">E-mail</p>
+                <p>example@gmail.com</p>
+                <p>debra.hollie@example.com</p>
+            </div>
+            <div class="bg-blue-600 text-white rounded-lg p-4 shadow-lg text-center w-full md:w-1/3">
+                <p class="font-bold">Contact</p>
+                <p>019457896332</p>
+                <p>016457896333</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="mb-12">
+        <img src="{% static 'images/c2.png' %}" 
+             alt="A hand pointing to a location on a map" 
+             class="w-full rounded-lg shadow-lg">
+    </div>
+
+    <!-- Contact Form Section -->
+    <div class="bg-gray-200 p-8 rounded-lg shadow-md">
+        <div class="text-center mb-8">
+            <h3 class="text-xl font-bold">Have a List? We've Got the Stationery—Contact Us Now!</h3>
+            <p class="text-sm">Write Us</p>
+            <p class="text-xs">We are always happy to be of service to you. Be sure to listen to the prompt to help direct you to the right person.</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                {{ form.name }}
+                {{ form.email }}
+                {{ form.phone }}
+                {{ form.message }}
+            </div>
+            <div class="text-center md:col-span-2">
+                <button type="submit" 
+                        class="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300">
+                    Send Message
+                </button>
+            </div>
+        </form>
+
+        {% if success %}
+        <div class="text-center mt-4">
+            <p class="text-green-600 font-bold">Message Sent Successfully!</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Stationery{% endblock %}
+
+{% block content %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color:white;
+        }
+    </style>
+</head>
+<body>
+    <div class="w-full max-w-9xl mx-auto p-4 mt-12">
+        <!-- Hero Banner Section -->
+        <div class="mb-12">
+            <img src="{% static 'images/a1.png' %}" alt="Stationery items in a bag" class="w-full ">
+        </div>
+
+        <!-- About Text Section -->
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">"Smart Supplies for Bright Futures."</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto">We provide quality stationery and school supplies to support learning, creativity, and organization. From classrooms to home desks, we're here to help students and educators stay prepared and inspired.</p>
+        </div>
+
+        <!-- Product Gallery Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Product 1 -->
+            <div class="bg-white rounded-lg  p-6 flex flex-col items-center">
+                <img src="{% static 'images/6.png' %}" alt="Notebooks and highlighters" class="w-full h-auto rounded-lg object-cover mb-4">
+            </div>
+
+            <!-- Product 2 -->
+            <div class="bg-white rounded-lg  p-6 flex flex-col items-center">
+                <img src="{% static 'images/2.png' %}" alt="Open notebooks with highlighters" class="w-full h-auto rounded-lg object-cover mb-4">
+            </div>
+
+            <!-- Product 3 -->
+            <div class="bg-white rounded-lg p-6 flex flex-col items-center">
+                <img src="{% static 'images/2.png' %}" alt="Planner with highlighters" class="w-full h-auto rounded-lg object-cover mb-4">
+            </div>
+        </div>
+
+        <!-- --- -->
+
+        <!-- Pen & Pencil Section -->
+        <div class="text-center my-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">PEN & PENCIL</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto mb-8">At Supplyhive, we believe a great pen is more than just a writing tool—it's an expression of thought, precision, and personality. From smooth everyday ballpoints to elegant signature pens, we offer reliable writing instruments designed for comfort, style, and performance.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <img src="{% static 'images/a2.png' %}" alt="A collection of pens" class="w-full md:w-1/2 rounded-lg">
+                <img src="{% static 'images/a3.png' %}" alt="A collection of colored pencils" class="w-full md:w-1/2 rounded-lg">
+            </div>
+        </div>
+
+        <!-- --- -->
+
+        <!-- Bags Section -->
+        <div class="text-center my-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">BAGS</h2>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <img src="{% static 'images/a4.png' %}" alt="A black bag" class="w-full md:w-1/2 rounded-lg">
+                <img src="{% static 'images/a5.png' %}" alt="A brown leather bag" class="w-full md:w-1/2 rounded-lg ">
+            </div>
+        </div>
+        
+        <!-- --- -->
+        
+        <!-- All Stationery Section -->
+        <div class="text-center my-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">ALL STATIONERY</h2>
+            <p class="text-gray-600 max-w-3xl mx-auto mb-8">We offer a wide range of stationery essentials, from notebooks, folders, and sticky notes to markers, staplers, and rulers. Each item is chosen for quality, functionality, and style—perfect for school, office, or creative use.</p>
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <img src="{% static 'images/a6.png' %}" alt="A collection of stationery items" class="w-full md:w-1/2 rounded-lg">
+            </div>
+        </div>
+    </div>
+
+{% include "team.html" %}
+
+
+{% endblock %}

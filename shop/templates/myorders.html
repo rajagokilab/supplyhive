@@ -1,0 +1,14 @@
+{% for order in orders %}
+<div class="card mb-4 p-3">
+    <p>Order ID: OD{{ order.id }}</p>
+    <p>Total Amount: Rs. {{ order.total_amount }}</p>
+    <p>Placed On: {{ order.created_at|date:"M d, Y" }}</p>
+
+    <!-- Track Order Link -->
+    <a href="{% url 'track_order' order.id %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        Track Order
+    </a>
+</div>
+{% empty %}
+<p>You have no orders yet.</p>
+{% endfor %}

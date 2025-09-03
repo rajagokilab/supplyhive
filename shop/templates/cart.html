@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My Cart{% endblock %}
+
+{% block content %}
+<div class="container py-5 px-3">
+    <h1 class="my-5 text-center">My Cart</h1>
+
+    <div class="bg-white rounded-4 shadow-sm p-4 p-md-5 mt-4">
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col" class="text-center">Quantity</th>
+                        <th scope="col">Unit Price</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col" class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr data-id="{{ item.id }}">
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="{{ item.image }}" alt="{{ item.name }}" class="img-fluid rounded-3 me-3" style="max-width: 100px;">
+                                <div>
+                                    <p class="mb-0 fw-bold">{{ item.name }}</p>
+                                    <p class="text-primary mb-0">Rs.{{ item.price }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button class="btn btn-outline-secondary btn-sm me-1 rounded-2 update-qty" data-action="decrement">-</button>
+                                <input type="text" class="form-control form-control-sm text-center w-25" value="{{ item.quantity }}" readonly>
+                                <button class="btn btn-outline-secondary btn-sm ms-1 rounded-2 update-qty" data-action="increment">+</button>
+                            </div>
+                        </td>
+                        <td>Rs.{{ item.price }}</td>
+                        <td class="item-total">Rs.{{ item.total }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-danger btn-sm remove-item">Remove</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">Your cart is empty.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row align-items-center mt-5">
+        <div class="col-12 col-md-6 text-start">
+            <h5 class="fw-bold">Subtotal: Rs.<span id="subtotal">{{ subtotal }}</span></h5>
+            <h4 class="fw-bold">Total: Rs.<span id="total">{{ subtotal }}</span></h4>
+            <a href="{% url 'checkout' %}" id="checkout-btn" class="btn btn-primary mt-3 rounded-pill px-4">
+                Proceed to Checkout
+            </a>
+        </div>
+        <div class="col-12 col-md-6 d-flex justify-content-center justify-content-md-end mt-4 mt-md-0">
+            <img src="{% static 'images/schoolbanner.png' %}" alt="School Supplies" class="img-fluid rounded-3" style="max-height: 250px;">
+        </div>
+    </div>
+</div>
+
+<script>
+   
+document.addEventListener('DOMContentLoaded', () => {
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    checkoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        try {
+            // Check login status
+            const res = await fetch('/api/check-login/');
+            const data = await res.json();
+
+            if (data.logged_in) {
+                // User is logged in, go to checkout
+                window.location.href = '/checkout/';
+            } else {
+                // User not logged in, show alert or modal
+                alert('You need to log in to proceed to checkout!');
+                // Optionally, show login modal:
+                // showLoginModal();
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Something went wrong. Try again.');
+        }
+    });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Update quantity buttons
+    const qtyButtons = document.querySelectorAll('.update-qty');
+    qtyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const row = btn.closest('tr');
+            const productId = row.dataset.id;
+            const action = btn.dataset.action;
+
+            fetch(`/cart/update/${productId}/${action}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    if (data.quantity === 0) {
+                        row.remove();
+                    } else {
+                        row.querySelector('input').value = data.quantity;
+                        row.querySelector('.item-total').textContent = `Rs.${data.item_total}`;
+                    }
+                    document.getElementById('subtotal').textContent = data.subtotal;
+                    document.getElementById('total').textContent = data.subtotal;
+                }
+            });
+        });
+    });
+
+    // Remove item buttons
+    const removeButtons = document.querySelectorAll('.remove-item');
+    removeButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const row = btn.closest('tr');
+            const productId = row.dataset.id;
+
+            fetch(`/cart/remove/${productId}/`, {
+                method: 'GET',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    row.remove();
+                    document.getElementById('subtotal').textContent = data.subtotal;
+                    document.getElementById('total').textContent = data.subtotal;
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}

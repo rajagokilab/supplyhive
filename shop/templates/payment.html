@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="container py-5 px-3">
+    <h1 class="my-5 text-center">Checkout</h1>
+    <div class="row g-4 justify-content-center">
+
+        <!-- Billing Details -->
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card p-4 rounded-4 shadow-sm">
+                <h2 class="h4 mb-4">Billing Details</h2>
+                <form id="billingForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ user.get_full_name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="street" class="form-label">Street Address</label>
+                        <input type="text" class="form-control" id="street" name="street" value="{{ user.profile.street }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="city" class="form-label">Town/City</label>
+                        <input type="text" class="form-control" id="city" name="city" value="{{ user.profile.city }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postal" class="form-label">Postal Code</label>
+                        <input type="text" class="form-control" id="postal" name="postal_code" value="{{ user.profile.postal_code }}" required>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Order Summary & Payment -->
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card p-4 rounded-4 shadow-sm mb-4">
+                <h2 class="h4 mb-4">Your Order</h2>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Products</span>
+                    <span>Subtotal</span>
+                </div>
+                {% for item in cart_items %}
+                <div class="d-flex justify-content-between mb-2">
+                    <p class="mb-0 fw-bold">{{ item.name }} x {{ item.quantity }}</p>
+                    <p class="mb-0">Rs.{{ item.total }}</p>
+                </div>
+                {% endfor %}
+                <div class="bg-primary text-white p-3 rounded-3 d-flex justify-content-between align-items-center mt-3">
+                    <h4 class="h5 mb-0">Total</h4>
+                    <h4 class="h5 mb-0">Rs.{{ subtotal }}</h4>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="card p-4 rounded-4 shadow-sm">
+                <h2 class="h4 mb-4">Payment Method</h2>
+                <form id="placeOrderForm" action="{% url 'place_order' %}">
+                    {% csrf_token %}
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod" checked>
+                        <label class="form-check-label d-flex align-items-center" for="cod">
+                            Cash on Delivery
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment_method" id="upi" value="upi">
+                        <label class="form-check-label d-flex align-items-center" for="upi">
+                            UPI
+                        </label>
+                    </div>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="payment_method" id="debitCard" value="debit_card">
+                        <label class="form-check-label d-flex align-items-center" for="debitCard">
+                            Debit Card
+                        </label>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="radio" name="payment_method" id="creditCard" value="credit_card">
+                        <label class="form-check-label d-flex align-items-center" for="creditCard">
+                            Credit Card
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 shadow-sm w-100">Place Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('placeOrderForm');
+    const csrfToken = '{{ csrf_token }}';
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        const billingForm = document.getElementById('billingForm');
+
+        const billingData = {
+            name: billingForm.name.value.trim(),
+            street: billingForm.street.value.trim(),
+            city: billingForm.city.value.trim(),
+            postal_code: billingForm.postal_code.value.trim(),
+            payment_mode: document.querySelector('input[name="payment_method"]:checked').value
+        };
+
+        if (!billingData.name || !billingData.street || !billingData.city || !billingData.postal_code) {
+            alert("Please fill all billing fields");
+            return;
+        }
+
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest' 
+            },
+            body: JSON.stringify(billingData)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // ✅ Show success message with total amount
+        alert(`${data.message}\nTotal Amount: Rs.${data.total_amount}`);
+                window.location.href = "/"; // Redirect to homepage or my orders page
+            } else {
+                alert(data.message); // Show error message
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Something went wrong. Please try again.');
+        });
+    });
+});
+</script>
+
+
+{% endblock %}

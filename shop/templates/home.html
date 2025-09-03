@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}Home - Stationery{% endblock %}
+
+{% block content %}
+
+<section class="py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <img src="{% static 'images/sb1.png' %}" alt="Stationery Banner" class="w-full h-full object-cover">
+    </div>
+</section>
+
+{% include "banner.html" %}
+
+<!-- Featured Products Section -->
+<div class="text-center mb-5">
+    <h2 class="h3 fw-bold">Featured Products</h2>
+</div>
+<div class="flex flex-wrap justify-center gap-4">
+    {% for product in featured_products %}
+    <div class="w-full sm:w-80 md:w-72 lg:w-72 flex justify-center">
+        <div class="rounded-2xl bg-[#78b2f9] text-white overflow-hidden">
+            <img src="{{ product.image.url }}" class="w-full rounded-2xl" alt="{{ product.name }}">
+            <div class="bg-[#78b2f9] rounded-b-2xl text-center p-4">
+                <h5 class="text-lg mb-1 font-semibold">{{ product.name }}</h5>
+                <div class="text-yellow-400 mb-2 text-xl">
+                    {% for i in "12345"|slice:":product.rating" %}★{% endfor %}
+                </div>
+                <p class="mb-1">Rs. {{ product.price }}</p>
+                <p class="mb-3">{{ product.bulk_price_info }}</p>
+                <a href="{% url 'shop' %}" class="bg-white text-[#78b2f9] font-bold rounded-full px-4 py-2 inline-block">
+                    Add to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% include "testimonials.html" %}
+<div class="text-center mb-8">
+    <h2 class="text-2xl font-bold text-gray-900">Back to School</h2>
+</div>
+
+<div class="flex flex-wrap justify-center gap-6">
+    {% for product in back_to_school_products %}
+    <div class="w-full sm:w-80 md:w-72 lg:w-72 flex justify-center">
+        <div class="rounded-2xl overflow-hidden bg-[#78b2f9] text-white shadow-lg">
+            <img src="{{ product.image.url }}" class="w-full rounded-xl object-cover" alt="{{ product.name }}">
+            <div class="text-center p-4">
+                <h5 class="text-lg font-semibold mb-1">{{ product.name }}</h5>
+                <p class="mb-1">Rs. {{ product.price }}</p>
+                <p class="mb-3">{{ product.bulk_price_info }}</p>
+                <a href="{% url 'shop' %}" 
+                   class="bg-white text-[#78b2f9] font-bold rounded-full px-4 py-2 inline-block">
+                    Add to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% include "team.html" %}
+
+{% endblock %}
